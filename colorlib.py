@@ -144,7 +144,7 @@ class Colors:
             [(v, k) for k, v in aggregate_colors.items()], reverse=True
         )
 
-    def copy(self):
+    def copy(self) -> Colors:
         """Create an identical copy of this object."""
 
         colors_cp = Colors()
@@ -152,7 +152,7 @@ class Colors:
         return colors_cp
 
     @property
-    def weights(self):
+    def weights(self) -> list[int]:
         """
         Return the list of "weights" of each color, or how relevant that color
         is in the entire collection.
@@ -170,7 +170,7 @@ class Colors:
         return [color[0] for color in self._colors]
 
     @property
-    def rgb_colors(self):
+    def rgb_colors(self) -> list[tuple[int, int, int]]:
         """
         The list of `RGB` colors in the image.
         """
@@ -178,7 +178,7 @@ class Colors:
         return [color[1][:3] for color in self._colors]
 
     @property
-    def rgba_colors(self):
+    def rgba_colors(self) -> list[tuple[int, int, int, int]]:
         """
         The list of `RGBA` colors in the image.
 
@@ -187,7 +187,9 @@ class Colors:
 
         return [color[1] for color in self._colors]
 
-    def run_kmeans(self, k_clusters: int = 8, runs: int = 64, max_iter: int = 256):
+    def run_kmeans(
+        self, k_clusters: int = 8, runs: int = 64, max_iter: int = 256
+    ) -> Colors:
         """
         Run [K-means clustering](https://en.wikipedia.org/wiki/K-means_clustering)
         on all the colors in the pool, which is useful if you instantiated the
@@ -247,7 +249,7 @@ class Colors:
 
     def filter_transparency(
         self, threshold: int = 230, remove: bool = True, invert: bool = False
-    ):
+    ) -> Colors:
         """
         Filter out colors whose transparency is too low.
 
@@ -301,7 +303,7 @@ class Colors:
 
     def filter_saturation(
         self, threshold: int = 35, remove: bool = False, invert: bool = False
-    ):
+    ) -> Colors:
         """
         Filter out colors whose saturation is too low.
 
@@ -356,7 +358,7 @@ class Colors:
 
     def filter_value(
         self, threshold: int = 20, remove: bool = False, invert: bool = False
-    ):
+    ) -> Colors:
         """
         Filter out colors whose value (lightness) is too low.
 
@@ -409,7 +411,7 @@ class Colors:
 
         return color_obj
 
-    def show(self, width=1024, height=128):
+    def show(self, width: int = 1024, height: int = 128):
         """
         Display an image showing the current collection of colors.
 
@@ -442,7 +444,7 @@ class Colors:
         img.show()
 
 
-def rgb_to_hsv(r, g, b):
+def rgb_to_hsv(r: int, g: int, b: int) -> tuple[float, float, float]:
     """
     Convert RGB values to HSV values (hue, saturation, and value).
 
