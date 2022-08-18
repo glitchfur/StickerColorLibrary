@@ -90,7 +90,9 @@ class Colors:
     """
 
     def __init__(
-        self, stickers: Optional[list[str | BinaryIO]] = None, quantize: int = 16
+        self,
+        stickers: Optional[list[str | BinaryIO | Image.Image]] = None,
+        quantize: int = 16,
     ):
         """
         Create a new instance of `Colors` which aggregates color information
@@ -107,9 +109,10 @@ class Colors:
 
         #### stickers
 
-        A list of either:
+        A list of any of the following:
         - strings of file paths to sticker images
         - file-like objects with a `.read()` method
+        - pre-made PIL `Image` objects
 
         Can also be left `None`, which means the color list is created empty.
 
@@ -126,7 +129,10 @@ class Colors:
         aggregate_colors = {}
 
         for sticker in stickers:
-            sticker_img = Image.open(sticker).convert("RGBA")
+            if isinstance(sticker, Image.Image):
+                sticker_img = sticker.convert("RGBA")
+            else:
+                sticker_img = Image.open(sticker).convert("RGBA")
             sticker_quantized = sticker_img.quantize(quantize).convert("RGBA")
             sticker_colors = sticker_quantized.getcolors()
             for color in sticker_colors:
@@ -434,6 +440,7 @@ class Colors:
             )
 
         img.show()
+
 
 def rgb_to_hsv(r, g, b):
     """
