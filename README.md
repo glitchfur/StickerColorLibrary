@@ -6,6 +6,8 @@ It is intended for use by developers to make picking the "primary" color of stic
 
 # Installation
 
+Minimum Python version is 3.7.
+
 Installation is straightforward. Clone this repo, install the requirements with `pip install -r requirements.txt`, then import the library. It is a single file with one class, so you can simply just:
 
 ```python

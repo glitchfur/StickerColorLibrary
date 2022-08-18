@@ -71,6 +71,8 @@ low saturation and low value which are moved to the back of the list.
 Full API documentation is available below.
 """
 
+from __future__ import annotations
+
 from typing import BinaryIO, Optional
 from colorsys import rgb_to_hsv as colorsys_rgb_to_hsv
 
