@@ -68,6 +68,9 @@ The end result would be `colors` being a `list` of `tuple` representing RGB
 values, in order of most relevance to least relevance, except for colors with
 low saturation and low value which are moved to the back of the list.
 
+You can view an actual image of the colors in your current palette at any time
+by calling `.show()`, which will pop out a window showing your color collection.
+
 Full API documentation is available below.
 """
 
@@ -76,7 +79,7 @@ from __future__ import annotations
 from typing import BinaryIO, Optional
 from colorsys import rgb_to_hsv as colorsys_rgb_to_hsv
 
-from PIL import Image
+from PIL import Image, ImageDraw
 from sklearn.cluster import KMeans
 
 
@@ -157,6 +160,7 @@ class Colors:
         - After calling `run_kmeans()`, the number then represents how many
         specific colors from each sticker became a part of that color's cluster.
         """
+
         return [color[0] for color in self._colors]
 
     @property
@@ -164,6 +168,7 @@ class Colors:
         """
         The list of `RGB` colors in the image.
         """
+
         return [color[1][:3] for color in self._colors]
 
     @property
@@ -173,6 +178,7 @@ class Colors:
 
         For images whose initial mode was `RGB`, the `A` value will be `255` for all colors.
         """
+
         return [color[1] for color in self._colors]
 
     def run_kmeans(self, k_clusters: int = 8, runs: int = 64, max_iter: int = 256):
@@ -370,6 +376,7 @@ class Colors:
         If `invert` is `True`, the filter is inverted: Colors that would have
         been removed are kept on the list, and vice-versa.
         """
+
         approved_colors = []
         reject_colors = []
 
@@ -396,6 +403,37 @@ class Colors:
 
         return color_obj
 
+    def show(self, width=1024, height=128):
+        """
+        Display an image showing the current collection of colors.
+
+        ---
+
+        ### Parameters:
+
+        #### width
+        *Default:* `1024`
+
+        The width of the image displaying the colors.
+
+        #### height
+        *Default:* `128`
+
+        The height of the image displaying the colors.
+        """
+
+        img = Image.new("RGB", (width, height), (255, 255, 255))
+        img_draw = ImageDraw.Draw(img)
+
+        color_width = width // len(self.rgb_colors)
+
+        for i in range(len(self.rgb_colors)):
+            img_draw.rectangle(
+                (i * color_width, 0, (i * color_width) + color_width, height),
+                fill=self.rgb_colors[i],
+            )
+
+        img.show()
 
 def rgb_to_hsv(r, g, b):
     """
